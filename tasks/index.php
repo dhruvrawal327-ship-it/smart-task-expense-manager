@@ -5,13 +5,11 @@ require_once "../includes/functions.php";
 $userId = $_SESSION['user_id'];
 $error = "";
 
-// Handle form submissions
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     verifyCsrf();
     $action = $_POST['action'] ?? '';
 
     try {
-        // ADD OR UPDATE TASK
         if ($action === "add" || $action === "update") {
             $title = trim($_POST['title'] ?? '');
             $description = trim($_POST['description'] ?? '');
@@ -43,7 +41,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     $stmt->execute([$title, $description, $priority, $dueDate ?: null, $taskId, $userId]);
                     logActivity($pdo, $userId, "Updated task: " . $title);
 
-                    // Send simulated email alert
                     $uStmt = $pdo->prepare("SELECT name, email FROM users WHERE id = ?");
                     $uStmt->execute([$userId]);
                     $currentUser = $uStmt->fetch();
@@ -63,10 +60,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 header("Location: index.php");
                 exit;
             }
-        }
-
-        // DELETE TASK
-        elseif ($action === "delete") {
+        } elseif ($action === "delete") {
             $taskId = (int)($_POST['task_id'] ?? 0);
             $stmt = $pdo->prepare("DELETE FROM tasks WHERE id=? AND user_id=?");
             $stmt->execute([$taskId, $userId]);
@@ -79,10 +73,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             }
             header("Location: index.php");
             exit;
-        }
-
-        // COMPLETE OR UNDO TASK
-        elseif ($action === "complete" || $action === "pending") {
+        } elseif ($action === "complete" || $action === "pending") {
             $taskId = (int)($_POST['task_id'] ?? 0);
             $status = $action === "complete" ? "Completed" : "Pending";
             $stmt = $pdo->prepare("UPDATE tasks SET status=? WHERE id=? AND user_id=?");
@@ -105,7 +96,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     }
 }
 
-// Load task for editing
 $editTask = null;
 if (isset($_GET['edit'])) {
     $stmt = $pdo->prepare("SELECT * FROM tasks WHERE id=? AND user_id=?");
@@ -113,7 +103,6 @@ if (isset($_GET['edit'])) {
     $editTask = $stmt->fetch();
 }
 
-// Search and filters
 $search = trim($_GET['search'] ?? '');
 $status = $_GET['status'] ?? '';
 $priorityFilter = $_GET['priority'] ?? '';
@@ -137,7 +126,6 @@ if (in_array($priorityFilter, ['Low', 'Medium', 'High'], true)) {
 
 $sql .= " ORDER BY id DESC";
 
-// Count total filtered tasks
 $countSql = "SELECT COUNT(*) FROM tasks WHERE user_id=?";
 $countParams = [$userId];
 
@@ -173,7 +161,6 @@ $tasks = $stmt->fetchAll();
 
 include "../includes/header.php";
 ?>
-
 <h2 class="page-title">Task Management</h2>
 
 <?php showMessage(); ?>
@@ -184,18 +171,6 @@ include "../includes/header.php";
     </div>
 <?php endif; ?>
 
-<!-- Add / Edit Task Form -->
- <h2 class="page-title">Task Management</h2>
-
-<?php showMessage(); ?>
-
-<?php if ($error): ?>
-    <div class="alert alert-danger custom-alert" role="alert">
-        <strong>Error!</strong> <?= htmlspecialchars($error) ?>
-    </div>
-<?php endif; ?>
-
-<!-- Add / Edit Task Form -->
 <div class="card p-4 mb-4">
     <h5><?= $editTask ? "Edit Task" : "Add New Task" ?></h5>
 
@@ -244,7 +219,6 @@ include "../includes/header.php";
     </form>
 </div>
 
-<!-- Search & Filter -->
 <div class="card p-3 mb-4">
     <form method="GET" class="row g-2">
         <div class="col-md-4">
@@ -273,7 +247,6 @@ include "../includes/header.php";
     </form>
 </div>
 
-<!-- Task List -->
 <div class="card p-4">
     <h5 class="mb-3">Your Tasks (<?= $taskTotalCount ?>)</h5>
 
@@ -281,7 +254,7 @@ include "../includes/header.php";
         <p class="text-muted mb-0">No tasks found.</p>
     <?php else: ?>
         <div class="table-responsive">
-            <table class="table table-hover align-middle">
+            <table class="table table-hover align-middle mobile-card-table">
                 <thead>
                     <tr>
                         <th>Title</th>
@@ -294,13 +267,13 @@ include "../includes/header.php";
                 <tbody>
                     <?php foreach ($tasks as $t): ?>
                         <tr>
-                            <td>
+                            <td class="mobile-card-header">
                                 <strong><?= htmlspecialchars($t['title']) ?></strong>
                                 <?php if (!empty($t['description'])): ?>
                                     <div class="small text-muted"><?= htmlspecialchars($t['description']) ?></div>
                                 <?php endif; ?>
                             </td>
-                            <td>
+                            <td data-label="Priority">
                                 <?php
                                 $badgeClass = 'bg-info text-dark';
                                 if (($t['priority'] ?? '') === 'High') {
@@ -311,30 +284,32 @@ include "../includes/header.php";
                                 ?>
                                 <span class="badge <?= $badgeClass ?>"><?= htmlspecialchars($t['priority']) ?></span>
                             </td>
-                            <td><?= htmlspecialchars($t['due_date'] ?? '—') ?></td>
-                            <td>
+                            <td data-label="Due Date" class="text-nowrap"><?= htmlspecialchars($t['due_date'] ?? '—') ?></td>
+                            <td data-label="Status">
                                 <span class="badge <?= ($t['status'] ?? '') === 'Completed' ? 'bg-success' : 'bg-secondary' ?>">
                                     <?= htmlspecialchars($t['status'] ?? 'Pending') ?>
                                 </span>
                             </td>
                             <td>
-                                <form method="POST" class="d-inline">
-                                    <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(csrfToken()) ?>">
-                                    <input type="hidden" name="task_id" value="<?= $t['id'] ?>">
-                                    <input type="hidden" name="action" value="<?= ($t['status'] ?? '') === 'Completed' ? 'pending' : 'complete' ?>">
-                                    <button class="btn btn-sm btn-outline-success">
-                                        <?= ($t['status'] ?? '') === 'Completed' ? 'Undo' : 'Complete' ?>
-                                    </button>
-                                </form>
+                                <div class="d-flex gap-1 action-buttons">
+                                    <form method="POST">
+                                        <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(csrfToken()) ?>">
+                                        <input type="hidden" name="task_id" value="<?= $t['id'] ?>">
+                                        <input type="hidden" name="action" value="<?= ($t['status'] ?? '') === 'Completed' ? 'pending' : 'complete' ?>">
+                                        <button class="btn btn-sm btn-outline-success">
+                                            <?= ($t['status'] ?? '') === 'Completed' ? 'Undo' : 'Complete' ?>
+                                        </button>
+                                    </form>
 
-                                <a href="?edit=<?= $t['id'] ?>" class="btn btn-sm btn-warning">Edit</a>
+                                    <a href="?edit=<?= $t['id'] ?>" class="btn btn-sm btn-warning">Edit</a>
 
-                                <form method="POST" class="d-inline" onsubmit="return confirm('Delete this task?');">
-                                    <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(csrfToken()) ?>">
-                                    <input type="hidden" name="action" value="delete">
-                                    <input type="hidden" name="task_id" value="<?= $t['id'] ?>">
-                                    <button class="btn btn-sm btn-danger">Delete</button>
-                                </form>
+                                    <form method="POST" onsubmit="return confirm('Delete this task?');">
+                                        <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(csrfToken()) ?>">
+                                        <input type="hidden" name="action" value="delete">
+                                        <input type="hidden" name="task_id" value="<?= $t['id'] ?>">
+                                        <button class="btn btn-sm btn-danger">Delete</button>
+                                    </form>
+                                </div>
                             </td>
                         </tr>
                     <?php endforeach; ?>

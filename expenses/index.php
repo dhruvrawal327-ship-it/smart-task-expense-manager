@@ -94,7 +94,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         exit;
     }
 }
-
 $editExpense = null;
 if (isset($_GET['edit'])) {
     $stmt = $pdo->prepare("SELECT * FROM expenses WHERE id=? AND user_id=?");
@@ -228,7 +227,7 @@ include "../includes/header.php";
         <p class="text-muted mb-0">No expenses found.</p>
     <?php else: ?>
         <div class="table-responsive">
-            <table class="table table-hover align-middle">
+            <table class="table table-hover align-middle mobile-card-table">
                 <thead>
                     <tr>
                         <th>Date</th>
@@ -242,19 +241,21 @@ include "../includes/header.php";
                 <tbody>
                     <?php foreach ($expenses as $exp): ?>
                         <tr>
-                            <td><?= htmlspecialchars($exp['expense_date']) ?></td>
-                            <td><strong><?= htmlspecialchars($exp['title']) ?></strong></td>
-                            <td><span class="badge bg-secondary"><?= htmlspecialchars($exp['category']) ?></span></td>
-                            <td>₹<?= number_format((float)$exp['amount'], 2) ?></td>
-                            <td><?= htmlspecialchars($exp['notes'] ?? '') ?></td>
+                            <td data-label="Date" class="text-nowrap mobile-date-cell"><?= htmlspecialchars($exp['expense_date']) ?></td>
+                            <td class="mobile-card-header"><strong><?= htmlspecialchars($exp['title']) ?></strong></td>
+                            <td data-label="Category"><span class="badge bg-secondary"><?= htmlspecialchars($exp['category']) ?></span></td>
+                            <td data-label="Amount" class="text-nowrap">₹<?= number_format((float)$exp['amount'], 2) ?></td>
+                            <td data-label="Notes"><?= htmlspecialchars($exp['notes'] ?: '—') ?></td>
                             <td>
-                                <a href="?edit=<?= $exp['id'] ?>" class="btn btn-sm btn-warning">Edit</a>
-                                <form method="POST" class="d-inline" onsubmit="return confirm('Delete this expense?');">
-                                    <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(csrfToken()) ?>">
-                                    <input type="hidden" name="action" value="delete">
-                                    <input type="hidden" name="expense_id" value="<?= $exp['id'] ?>">
-                                    <button class="btn btn-sm btn-danger">Delete</button>
-                                </form>
+                                <div class="d-flex gap-1 action-buttons">
+                                    <a href="?edit=<?= $exp['id'] ?>" class="btn btn-sm btn-warning">Edit</a>
+                                    <form method="POST" onsubmit="return confirm('Delete this expense?');">
+                                        <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(csrfToken()) ?>">
+                                        <input type="hidden" name="action" value="delete">
+                                        <input type="hidden" name="expense_id" value="<?= $exp['id'] ?>">
+                                        <button class="btn btn-sm btn-danger">Delete</button>
+                                    </form>
+                                </div>
                             </td>
                         </tr>
                     <?php endforeach; ?>

@@ -372,3 +372,103 @@ html[data-theme="dark"] .modal-content {
 html[data-theme="dark"] .btn-close {
     filter: invert(1);
 }
+
+/* =========================================================
+   Responsive Mobile Card View for Tasks & Expenses Tables
+   ========================================================= */
+@media (max-width: 767.98px) {
+    .mobile-card-table thead {
+        display: none;
+    }
+
+    .mobile-card-table,
+    .mobile-card-table tbody,
+    .mobile-card-table tr,
+    .mobile-card-table td {
+        display: block;
+        width: 100%;
+    }
+
+    .mobile-card-table tr {
+        margin-bottom: 1rem;
+        padding: 0.85rem;
+        border: 1px solid rgba(128, 128, 128, 0.25);
+        border-radius: 0.65rem;
+        background-color: rgba(128, 128, 128, 0.04);
+    }
+
+    .mobile-card-table td {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0.4rem 0;
+        border: none;
+        text-align: right;
+    }
+
+    /* Display column label on the left using data-label */
+    .mobile-card-table td::before {
+        content: attr(data-label);
+        font-weight: 600;
+        font-size: 0.82rem;
+        opacity: 0.75;
+        text-align: left;
+        margin-right: 1rem;
+    }
+
+    /* Task Title (first cell) & Expense Title (.mobile-card-header) at top of card */
+    .mobile-card-table td:first-child,
+    .mobile-card-table td.mobile-card-header {
+        display: block;
+        text-align: left;
+        padding-bottom: 0.6rem;
+        margin-bottom: 0.4rem;
+        border-bottom: 1px solid rgba(128, 128, 128, 0.2);
+    }
+
+    .mobile-card-table td:first-child::before,
+    .mobile-card-table td.mobile-card-header::before {
+        display: none;
+    }
+
+    /* Keep Expense Date (first cell in expenses table) as a normal labeled row */
+    .mobile-card-table td.mobile-date-cell {
+        display: flex;
+        justify-content: space-between;
+        border-bottom: none;
+        padding-bottom: 0.4rem;
+        margin-bottom: 0;
+    }
+
+    .mobile-card-table td.mobile-date-cell::before {
+        display: inline-block;
+    }
+
+    /* Full-width evenly spaced Action buttons at the bottom of each card */
+    .mobile-card-table td:last-child {
+        display: block;
+        padding-top: 0.65rem;
+        margin-top: 0.4rem;
+        border-top: 1px solid rgba(128, 128, 128, 0.2);
+    }
+
+    .mobile-card-table td:last-child::before {
+        display: none;
+    }
+
+    .mobile-card-table td:last-child .action-buttons {
+        display: flex;
+        gap: 0.5rem;
+        width: 100%;
+    }
+
+    .mobile-card-table td:last-child .action-buttons form,
+    .mobile-card-table td:last-child .action-buttons a {
+        flex: 1;
+    }
+
+    .mobile-card-table td:last-child .action-buttons button,
+    .mobile-card-table td:last-child .action-buttons a {
+        width: 100%;
+    }
+}
