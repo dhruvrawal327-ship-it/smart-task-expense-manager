@@ -93,9 +93,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 include "includes/header.php";
 ?>
 
-<div class="row justify-content-center">
-    <div class="col-md-5">
-        <div class="card p-4">
+<div class="row justify-content-center align-items-center min-vh-100">
+    <div class="col-11 col-sm-8 col-md-5 col-lg-4" style="max-width: 400px;">
+        <div class="card p-4 shadow-sm">
             <h2 class="text-center mb-4">Welcome Back</h2>
 
             <?php if ($error): ?>

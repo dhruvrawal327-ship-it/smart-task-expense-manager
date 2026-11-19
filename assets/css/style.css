@@ -472,3 +472,32 @@ html[data-theme="dark"] .btn-close {
         width: 100%;
     }
 }
+
+/* Compact Mobile-Style Auth Card */
+.auth-content .card {
+    max-width: 390px;
+    margin: 0 auto;
+    padding: 1.5rem !important;
+    border-radius: 1rem;
+}
+
+.auth-content .form-control {
+    padding: 0.55rem 0.85rem;
+    font-size: 0.95rem;
+}
+
+.auth-content .btn-primary {
+    padding: 0.55rem 1rem;
+    font-weight: 500;
+}
+
+@media (max-width: 576px) {
+    .auth-content .card {
+        max-width: 340px;
+        padding: 1.25rem !important;
+    }
+
+    .auth-content h2 {
+        font-size: 1.4rem;
+    }
+}

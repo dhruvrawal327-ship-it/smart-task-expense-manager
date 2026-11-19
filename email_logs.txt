@@ -1,21 +1,5 @@
 ========================================
-DATE:    2026-11-19 14:22:02
-TO:      dhruv@gmail.com
-SUBJECT: New Login Detected
-MESSAGE:
-Hi Rawal Dhruv, a new login to your account was just recorded.
-========================================
-
-========================================
-DATE:    2026-11-19 14:22:48
-TO:      dhruv@gmail.com
-SUBJECT: New Login Detected
-MESSAGE:
-Hi Rawal Dhruv, a new login to your account was just recorded.
-========================================
-
-========================================
-DATE:    2026-11-19 14:30:56
+DATE:    2026-11-19 16:49:38
 TO:      dhruv@gmail.com
 SUBJECT: New Login Detected
 MESSAGE:
