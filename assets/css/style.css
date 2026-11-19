@@ -1,0 +1,374 @@
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    background: #f4f6fb;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    color: #263238;
+    margin: 0;
+}
+
+.navbar {
+    background: #172554 !important;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.navbar-brand {
+    font-size: 21px;
+    font-weight: 700;
+}
+
+.nav-link {
+    font-weight: 500;
+    margin-left: 8px;
+    transition: 0.2s;
+}
+
+.nav-link:hover {
+    color: #93c5fd !important;
+}
+
+.page-title {
+    font-weight: 700;
+    margin-bottom: 20px;
+    color: #172554;
+}
+
+.card {
+    background: white;
+    border: none;
+    border-radius: 14px;
+    box-shadow: 0 3px 15px rgba(0,0,0,0.05);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+}
+
+.stat-number {
+    font-size: 28px;
+    font-weight: 700;
+}
+
+.btn {
+    border-radius: 8px;
+    font-weight: 500;
+}
+
+.form-control,
+.form-select {
+    border-radius: 8px;
+    padding: 10px;
+}
+
+.form-control:focus,
+.form-select:focus {
+    box-shadow: 0 0 0 3px rgba(13,110,253,0.12);
+}
+
+.table {
+    vertical-align: middle;
+}
+
+.table thead th {
+    background: #f1f5f9;
+    color: #334155;
+    white-space: nowrap;
+}
+
+.badge {
+    padding: 7px 10px;
+}
+
+.alert {
+    border-radius: 9px;
+}
+
+@media (max-width: 768px) {
+    .stat-number {
+        font-size: 23px;
+    }
+
+    .page-title {
+        font-size: 23px;
+    }
+
+    .table-responsive {
+        font-size: 12px;
+    }
+
+    .card {
+        padding: 14px !important;
+    }
+
+    .btn {
+        font-size: 13px;
+    }
+}
+
+
+/* Sidebar layout */
+.app-layout {
+    display: flex;
+    min-height: 100vh;
+}
+
+.sidebar {
+    width: 250px;
+    min-width: 250px;
+    background: #172554;
+    color: white;
+    padding: 25px 18px;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.sidebar-brand {
+    padding: 5px 10px 30px;
+    border-bottom: 1px solid rgba(255,255,255,0.15);
+}
+
+.sidebar-brand h4 {
+    font-weight: 700;
+    margin-bottom: 5px;
+}
+
+.sidebar-brand small {
+    color: #cbd5e1;
+}
+
+.sidebar-menu {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 30px;
+}
+
+.sidebar-menu a,
+.logout-link {
+    color: #dbeafe;
+    text-decoration: none;
+    padding: 12px 14px;
+    border-radius: 8px;
+    display: block;
+}
+
+.sidebar-menu a:hover,
+.sidebar-menu a.active {
+    background: #2563eb;
+    color: white;
+}
+
+.sidebar-bottom {
+    margin-top: auto;
+    border-top: 1px solid rgba(255,255,255,0.15);
+    padding-top: 20px;
+}
+
+.sidebar-user {
+    padding: 10px;
+    color: white;
+    font-weight: 600;
+}
+
+.logout-link:hover {
+    background: #991b1b;
+    color: white;
+}
+
+.main-content {
+    flex: 1;
+    min-width: 0;
+    background: #f5f7fb;
+}
+
+.auth-content {
+    min-height: 100vh;
+    background: #f5f7fb;
+}
+
+@media (max-width: 768px) {
+    .app-layout {
+        flex-direction: column;
+    }
+
+    .sidebar {
+        width: 100%;
+        min-width: 100%;
+        min-height: auto;
+        padding: 15px;
+    }
+
+    .sidebar-brand {
+        padding-bottom: 12px;
+    }
+
+    .sidebar-menu {
+        flex-direction: row;
+        flex-wrap: wrap;
+        margin-top: 12px;
+    }
+
+    .sidebar-menu a {
+        padding: 9px 11px;
+        font-size: 14px;
+    }
+
+    .sidebar-bottom {
+        margin-top: 12px;
+        padding-top: 10px;
+    }
+}
+
+
+/* Custom notification messages */
+.custom-alert {
+    border: none;
+    border-left: 5px solid;
+    border-radius: 8px;
+    padding: 15px 45px 15px 18px;
+    margin-bottom: 22px;
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.06);
+    animation: alertSlide 0.3s ease;
+}
+
+.custom-alert.alert-success {
+    border-left-color: #198754;
+    background: #eaf7ef;
+    color: #146c43;
+}
+
+.custom-alert.alert-danger {
+    border-left-color: #dc3545;
+    background: #fff0f0;
+    color: #b02a37;
+}
+
+.custom-alert.alert-warning {
+    border-left-color: #ffc107;
+    background: #fff8e1;
+    color: #856404;
+}
+
+.custom-alert.alert-info {
+    border-left-color: #0dcaf0;
+    background: #eafaff;
+    color: #087990;
+}
+
+@keyframes alertSlide {
+    from {
+        opacity: 0;
+        transform: translateY(-8px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
+/* Theme toggle button */
+.theme-toggle {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 14px;
+    margin-bottom: 15px;
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 8px;
+    background: rgba(255,255,255,0.08);
+    color: white;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.theme-toggle:hover {
+    background: rgba(255,255,255,0.18);
+}
+
+/* Light theme */
+:root {
+    --page-bg: #f5f7fb;
+    --card-bg: #ffffff;
+    --text-color: #212529;
+    --muted-color: #6c757d;
+    --border-color: #dee2e6;
+    --input-bg: #ffffff;
+}
+
+/* Dark theme */
+html[data-theme="dark"] {
+    --page-bg: #111827;
+    --card-bg: #1f2937;
+    --text-color: #f9fafb;
+    --muted-color: #cbd5e1;
+    --border-color: #374151;
+    --input-bg: #273449;
+}
+
+body,
+.main-content,
+.auth-content {
+    background: var(--page-bg);
+    color: var(--text-color);
+    transition: background 0.25s ease, color 0.25s ease;
+}
+
+.card {
+    background: var(--card-bg);
+    color: var(--text-color);
+    border-color: var(--border-color);
+}
+
+.text-muted {
+    color: var(--muted-color) !important;
+}
+
+.table {
+    --bs-table-bg: var(--card-bg);
+    --bs-table-color: var(--text-color);
+    --bs-table-border-color: var(--border-color);
+}
+
+.form-control,
+.form-select {
+    background-color: var(--input-bg);
+    color: var(--text-color);
+    border-color: var(--border-color);
+}
+
+.form-control:focus,
+.form-select:focus {
+    background-color: var(--input-bg);
+    color: var(--text-color);
+}
+
+html[data-theme="dark"] .form-control::placeholder {
+    color: #aab4c3;
+}
+
+html[data-theme="dark"] .form-control:disabled,
+html[data-theme="dark"] .form-select:disabled {
+    background-color: #374151;
+}
+
+html[data-theme="dark"] .table thead th {
+    background-color: #273449;
+    color: white;
+}
+
+html[data-theme="dark"] .modal-content {
+    background-color: var(--card-bg);
+    color: var(--text-color);
+}
+
+html[data-theme="dark"] .btn-close {
+    filter: invert(1);
+}
